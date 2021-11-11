@@ -1,13 +1,26 @@
+timewindow = [-0.1, 0.1]
+
 def CoAnalyJob():
     import Sniper
     global ith
     ith += 1
     task = Sniper.Task(str(ith) +"-Job")
 
+    import BufMemMgr
+    bufMgr = task.createSvc("BufMemMgr")
+    bufMgr.property("TimeWindow").append(timewindow)
+
     import CoAnalysis
-    x = task.createAlg("DummyAnalyAlg")
+    task.createAlg("DummyAnalyAlg")
+    task.createSvc("ThrdInputSvc/InputSvc")
     
 
+    global first_time
+    if first_time:
+        task.show()
+        first_time = False
+
+    return task
 
 def GInput():
     import Sniper
