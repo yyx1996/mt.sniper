@@ -27,6 +27,10 @@ DummyAnalyAlg::DummyAnalyAlg(const string& name):
     
 }
 
+DummyAnalyAlg::~DummyAnalyAlg(){
+    
+}
+
 bool DummyAnalyAlg::initialize(){
     //get the instance of NavBuffer
     SniperDataPtr<JM::NavBuffer>  navBuf(getParent(), "/Event");
