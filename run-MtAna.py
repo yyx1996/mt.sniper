@@ -7,12 +7,13 @@ def HelloJob():
     ith += 1
     task = Sniper.Task(str(ith) +"-Job")
 
-    import BufferMemMgr
-    bufMgr = task.createSvc("BufferMemMgr")
-    bufMgr.property("TimeWindow").set([-0.1, 0.1])
+    Sniper.loadDll("libCoAnalysis.so")
+    # bufMgr = task.createSvc("MtBufferMemMgr")
+    # # bufMgr.property("TimeWindow").set([-0.1, 0.1])
+    # bufMgr.property("TimeWindow").set([0.0, 0.0])
 
-    iSvc = task.createSvc("ThrdInputSvc/InputSvc")
-    #x = task.createAlg("DummyAnalyAlg")
+    # iSvc = task.createSvc("ThrdInputSvc/InputSvc")
+    x = task.createAlg("DummyAnalyAlg")
 
     global first_time
     if first_time:
@@ -25,13 +26,14 @@ def HelloJob():
 def GInput():
     import Sniper
     task = Sniper.Task("GInput")
-    import BufferMemMgr
-    bufMgr = task.createSvc("BufferMemMgr")
-    bufMgr.property("TimeWindow").set([-0.1, 0.1]);
+    task.setLogLevel(0)
+    # import BufferMemMgr
+    # bufMgr = task.createSvc("BufferMemMgr")
+    # bufMgr.property("TimeWindow").set([-0.1, 0.1]);
  
-    import RootIOSvc
-    riSvc = task.createSvc("RootInputSvc/InputSvc")
-    riSvc.property("InputFile").set(["/home/yixiang/ACAT_project/mt.sniper/0.5M_OEC.root"])
+    # import RootIOSvc
+    # riSvc = task.createSvc("RootInputSvc/InputSvc")
+    # riSvc.property("InputFile").set(["/home/yixiang/ACAT_project/mt.sniper/0.5M_OEC.root"])
 
     task.createAlg("PackFragAlg")
 
@@ -51,7 +53,7 @@ if __name__ == "__main__":
     ROOT.EnableThreadSafety()
 
     import Sniper
-    #Sniper.setLogLevel(0)
+    Sniper.setLogLevel(0)
     #Sniper.setShowTime()
     #Sniper.setLogFile("log.txt", False)
 
@@ -75,7 +77,7 @@ if __name__ == "__main__":
     gs = SniperMuster.createGlobalStream("FragmentStream/GFragStream")
     gs.configInput(GInput)
     gs.configOutput(GOutput)
-    gs.configBuffer(50, 20)
+    gs.configBuffer(500, 20)
 
     # TODO: show the configurations
     #muster.show()

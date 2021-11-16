@@ -81,7 +81,7 @@ GlobalStream<T>::GlobalStream(const std::string& name)
 
 template<typename T>
 GlobalStream<T>::~GlobalStream<T>()
-{
+{   std::cout<<"############################Destruct a GlobalStream!!##########"<<std::endl;
     // waiting for the input Task
     m_ithread.stop();  //stop the input stream
     m_buf->setOver(1);  //notify the input stream that being waiting

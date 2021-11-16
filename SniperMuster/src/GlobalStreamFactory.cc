@@ -1,6 +1,6 @@
 #include "SniperMuster/GlobalStreamFactory.h"
 #include "SniperKernel/SniperException.h"
-
+#include <iostream>
 //###############GlobalStreamFactory####################//
 GlobalStreamFactory* GlobalStreamFactory::s_obj = nullptr;
 
@@ -51,7 +51,9 @@ m_name("GlobalStreamFactory"){
 }
 
 GlobalStreamFactory::~GlobalStreamFactory()
-{}
+{
+    std::cout<<"############################Destruct Factory!!##########"<<std::endl;
+}
 
 //###########################BookGlobalStream######################
 BookGlobalStream::BookGlobalStream(const std::string type, GSCreator creator){

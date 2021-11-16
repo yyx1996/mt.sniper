@@ -109,7 +109,8 @@ GlobalBuffer<T>::GlobalBuffer(int capacity, int cordon)
 
 template<typename T>
 GlobalBuffer<T>::~GlobalBuffer<T>()
-{
+{   
+    std::cout<<"############################Destruct a GlobalBuffer!!##########"<<std::endl;
     delete[] m_store;
 }
 

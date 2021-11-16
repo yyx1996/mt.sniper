@@ -18,7 +18,7 @@ bool ThrdInputSvc::initialize(){
 bool ThrdInputSvc::finalize(){
     bool stat = m_inputStream->finalize();
 
-    delete m_inputStream;
+    //delete m_inputStream;
 
     return stat;
 }
