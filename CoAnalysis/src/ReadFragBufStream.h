@@ -14,14 +14,13 @@ public:
     virtual bool first(bool /*read*/) { return true; }
     virtual bool next(int step = 1, bool read = true);
     virtual TObject* get();
+    std::shared_ptr<JM::EvtNavigator>& getRef();
 
 private:
     GlobalBuffer<Fragment<JM::EvtNavigator>>* m_fbuf;
     
     std::shared_ptr<Fragment<JM::EvtNavigator>> m_frag;
     int m_cEvt;
-
-    void checkFrag();
 };
 
 #endif

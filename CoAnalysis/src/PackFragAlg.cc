@@ -72,6 +72,9 @@ bool PackFragAlg::execute(){
 }
 
 bool PackFragAlg::finalize(){
+    m_frag = nullptr;
+    m_gbuf->push_back(m_frag);
+    //sleep(10);
     return true;
 }
 
