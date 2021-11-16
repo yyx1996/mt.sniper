@@ -49,7 +49,8 @@ bool DummyAnalyAlg::execute(){
 }
 
 bool DummyAnalyAlg::finalize(){
-    delete m_nbuf;
+    //delete m_nbuf;
+    return true;
 }
 
 
