@@ -26,6 +26,7 @@ def HelloJob():
 def GInput():
     import Sniper
     task = Sniper.Task("GInput")
+    task.setEvtMax(10)
     task.setLogLevel(0)
     # import BufferMemMgr
     # bufMgr = task.createSvc("BufferMemMgr")
@@ -44,6 +45,7 @@ def GOutput():
     task = Sniper.Task("GOutput")
     #wa = task.createAlg("WriteGBufAlg")
     #wa.property("DataFile").set("data.file")
+    task.setEvtMax(10)
 
     return task
 
@@ -77,7 +79,7 @@ if __name__ == "__main__":
     gs = SniperMuster.createGlobalStream("FragmentStream/GFragStream")
     gs.configInput(GInput)
     gs.configOutput(GOutput)
-    gs.configBuffer(500, 20)
+    gs.configBuffer(30, 20)
 
     # TODO: show the configurations
     #muster.show()

@@ -51,6 +51,7 @@ bool DummyAnalyAlg::execute(){
     typedef GlobalStream<Fragment<JM::EvtNavigator>> FragStream;
     auto m_fbuf = FragStream::GetBuffer("GFragStream");
     auto _pElm = m_fbuf->next();
+    // m_fbuf->setDone(_pElm);
     return true;
 }
 

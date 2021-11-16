@@ -126,7 +126,7 @@ void GlobalStream<T>::configBuffer(unsigned int capacity, unsigned int cordon)
 template<typename T>
 void GlobalStream<T>::join()
 {
-    m_ithread.stop();  //stop the input stream
+    // m_ithread.stop();  //stop the input stream
     m_buf->setOver(1);  //notify the input stream that being waiting
     m_ithread.join();
 
