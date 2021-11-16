@@ -12,3 +12,9 @@ void GlobalStreamMgr::put(const std::string& name, GlobalStreamBase* stream) {
 GlobalStreamBase* GlobalStreamMgr::get(const std::string& name) {
     return m_GBufMap[name];
 }
+
+void GlobalStreamMgr::join() {
+    for (auto& [name, stream]: m_GBufMap) {
+        stream->join();
+    }
+}

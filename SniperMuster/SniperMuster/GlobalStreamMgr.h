@@ -11,6 +11,8 @@ public:
     void put(const std::string&, GlobalStreamBase*);
     GlobalStreamBase* get(const std::string&);
 
+    void join();
+
 private:
     std::map<std::string, GlobalStreamBase*> m_GBufMap;
 };
