@@ -22,6 +22,7 @@
 #include "ThreadAssistor.h"
 #include <string>
 #include "SniperPrivate/GlobalStreamBase.h"
+#include "SniperMuster/GlobalStreamMgr.h"
 #include "SniperMuster/GlobalBuffer.h"
 #include "SniperKernel/Task.h"
 #include "SniperKernel/SniperLog.h"
@@ -52,7 +53,7 @@ class GlobalStream : public GlobalStreamBase
 
     private :
 
-        static std::map<std::string, GlobalStream*> s_GBufMap;
+        // static std::map<std::string, GlobalStream*> s_GBufMap;
 
         BufferType*      m_buf;
         const std::string  m_name;
@@ -76,7 +77,8 @@ GlobalStream<T>::GlobalStream(const std::string& name)
       m_buf(nullptr),
       m_name(name)
 {
-    s_GBufMap.insert(std::make_pair(name, this));
+    // s_GBufMap.insert(std::make_pair(name, this));
+    GlobalStreamMgr::instance().put(name, this);
 }
 
 template<typename T>
@@ -121,15 +123,19 @@ void GlobalStream<T>::configBuffer(unsigned int capacity, unsigned int cordon)
 
 template<typename T>
 typename GlobalStream<T>::BufferType* GlobalStream<T>::GetBuffer(const std::string& name){
-    auto it = s_GBufMap.find(name);
-    if ( it == s_GBufMap.end() ) {
-        throw SniperException(std::string("No GlobalStream ") + name);
-    }
+    GlobalStreamBase* gsb = GlobalStreamMgr::instance().get(name);
+    typedef GlobalStream<T> self_type;
+    self_type* gs = dynamic_cast<self_type*>(gsb);
+    return gs->buffer();
+    // auto it = s_GBufMap.find(name);
+    // if ( it == s_GBufMap.end() ) {
+    //     throw SniperException(std::string("No GlobalStream ") + name);
+    // }
 
-    return it->second->buffer();
+    // return it->second->buffer();
 }
 
-template<typename T>
-typename std::map<std::string, GlobalStream<T>*> GlobalStream<T>:: s_GBufMap;
+// template<typename T>
+// typename std::map<std::string, GlobalStream<T>*> GlobalStream<T>:: s_GBufMap;
 
 #endif
