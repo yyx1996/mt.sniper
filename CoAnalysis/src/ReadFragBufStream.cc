@@ -14,7 +14,7 @@ bool ReadFragBufStream::initialize(){
     return this->next();
 }
 
-bool ReadFragBufStream::next(int step, bool read){
+bool ReadFragBufStream::next(int /*step*/, bool /*read*/){
     if(m_frag != nullptr && ++m_cEvt < m_frag->evtDeque.size()) return true;
     
     //更新fragment
