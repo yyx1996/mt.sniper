@@ -14,7 +14,8 @@ public:
     virtual bool first(bool /*read*/) { return true; }
     virtual bool next(int step = 1, bool read = true);
     virtual TObject* get();
-    std::shared_ptr<JM::EvtNavigator>& getRef();
+
+    std::shared_ptr<Fragment<JM::EvtNavigator>>& getNextFrag();
 
 private:
     GlobalBuffer<Fragment<JM::EvtNavigator>>* m_fbuf;

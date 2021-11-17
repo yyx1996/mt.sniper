@@ -28,6 +28,7 @@ class MtFullStateNavBuf : public JM::NavBuffer
 
     private :
 
+        bool initFromNextFrag();
         void trimDated();
         void fillFresh();
         void fillNext();
@@ -39,6 +40,7 @@ class MtFullStateNavBuf : public JM::NavBuffer
 
         EventSmartPtr      m_beyond;
         ReadFragBufStream* m_iStream;
+        std::shared_ptr<Fragment<JM::EvtNavigator>> m_fragCache;
 };
 
 #endif

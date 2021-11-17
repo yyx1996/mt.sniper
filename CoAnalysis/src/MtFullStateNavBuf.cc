@@ -8,7 +8,8 @@ MtFullStateNavBuf::MtFullStateNavBuf(double floor, double ceiling)
       m_floor(floor),
       m_ceiling(ceiling),
       m_beyond(nullptr),
-      m_iStream(0)
+      m_iStream(nullptr),
+      m_fragCache(nullptr)
 {
 }
 
@@ -18,33 +19,19 @@ MtFullStateNavBuf::~MtFullStateNavBuf()
 
 void MtFullStateNavBuf::init(IInputStream* iStream)
 {
-    bool first = m_iStream == 0;
-
     m_iStream = dynamic_cast<ReadFragBufStream*>(iStream);
-
-    bool stat = true;
-    if ( first || m_rEntry <= 0 ) {
-        stat = m_iStream->first(m_rEntry<=0);
-    }
-    if ( m_rEntry > 0 ) {
-        stat = m_iStream->setEntry(m_rEntry);
-        m_rEntry = -1;
-    }
-
-    if ( stat ) {
-        m_beyond = m_iStream->getRef();
-        if ( m_beyond != nullptr ) {
-            fillNext();
-        }
-    }
+    initFromNextFrag();
 }
 
 bool MtFullStateNavBuf::next()
 {
-    if ( ++m_iCur >= m_dBuf.size() ) {
-        if ( m_beyond == nullptr ) {
+    if ( m_iCur >= 0 && m_dBuf[m_iCur] == m_fragCache->evtDeque[m_fragCache->lend-1] ) {
+        if ( ! initFromNextFrag() ) {
             return false;
         }
+    }
+
+    if ( ++m_iCur >= m_dBuf.size() ) {
         fillNext();
     }
 
@@ -85,6 +72,24 @@ bool MtFullStateNavBuf::reset(int entry)
     return true;
 }
 
+bool MtFullStateNavBuf::initFromNextFrag()
+{
+    m_dBuf.clear();
+    m_fragCache = m_iStream->getNextFrag();
+
+    bool stat = false;
+    if ( m_fragCache != nullptr ) {
+        m_rEntry = m_fragCache->lbegin;
+        auto _begin = m_fragCache->evtDeque.begin();
+        auto _lbegin = _begin + m_rEntry;
+        m_dBuf.insert(m_dBuf.end(), _begin, _lbegin);
+        m_iCur = m_rEntry - 1;
+        m_beyond = *_lbegin;
+        stat = true;
+    }
+    return stat;
+}
+
 void MtFullStateNavBuf::trimDated()
 {
     JM::EvtNavigator* fevt = m_dBuf.front().get();
@@ -111,7 +116,12 @@ void MtFullStateNavBuf::fillNext()
 {
     //we have to ensure m_beyond is valid before call this function
     m_dBuf.push_back(m_beyond);
-    m_beyond = m_iStream->next() ? m_iStream->getRef() : nullptr;
+    if ( m_rEntry+1 < m_fragCache->evtDeque.size() ) {
+        m_beyond = m_fragCache->evtDeque[++m_rEntry];
+    }
+    else {
+        m_beyond = nullptr;
+    }
 }
 
 double MtFullStateNavBuf::timeShift(EvtNavigator* nav)
