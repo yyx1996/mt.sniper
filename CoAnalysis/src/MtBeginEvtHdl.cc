@@ -1,5 +1,5 @@
-#include "BeginEvtHdl.h"
-#include "FullStateNavBuf.h"
+#include "MtBeginEvtHdl.h"
+#include "MtFullStateNavBuf.h"
 #include "RootIOSvc/IInputSvc.h"
 #include "SniperKernel/Incident.h"
 #include "SniperKernel/SniperPtr.h"

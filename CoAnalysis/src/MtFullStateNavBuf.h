@@ -1,5 +1,5 @@
-#ifndef FULL_STATE_NAV_BUF_H
-#define FULL_STATE_NAV_BUF_H
+#ifndef MT_FULL_STATE_NAV_BUF_H
+#define MT_FULL_STATE_NAV_BUF_H
 
 #include "EvtNavigator/NavBuffer.h"
 #include "ReadFragBufStream.h"

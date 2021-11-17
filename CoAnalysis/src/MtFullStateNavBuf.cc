@@ -1,4 +1,4 @@
-#include "FullStateNavBuf.h"
+#include "MtFullStateNavBuf.h"
 #include "RootIOSvc/IInputStream.h"
 
 using JM::EvtNavigator;

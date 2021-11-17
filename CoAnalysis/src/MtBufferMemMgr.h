@@ -1,5 +1,5 @@
-#ifndef SNIPER_BUFFER_MEM_MGR_H
-#define SNIPER_BUFFER_MEM_MGR_H
+#ifndef MT_SNIPER_BUFFER_MEM_MGR_H
+#define MT_SNIPER_BUFFER_MEM_MGR_H
 
 #include "BufferMemMgr/IDataMemMgr.h"
 #include "SniperKernel/SvcBase.h"

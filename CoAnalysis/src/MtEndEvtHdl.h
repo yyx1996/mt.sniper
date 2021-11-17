@@ -1,5 +1,5 @@
-#ifndef END_EVENT_HANDLER_H
-#define END_EVENT_HANDLER_H
+#ifndef MT_END_EVENT_HANDLER_H
+#define MT_END_EVENT_HANDLER_H
 
 #include "SniperKernel/IIncidentHandler.h"
 

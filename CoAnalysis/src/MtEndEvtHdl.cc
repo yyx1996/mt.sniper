@@ -1,5 +1,5 @@
-#include "EndEvtHdl.h"
-#include "FullStateNavBuf.h"
+#include "MtEndEvtHdl.h"
+#include "MtFullStateNavBuf.h"
 #include "RootIOSvc/RootOutputSvc.h"
 #include "SniperKernel/Task.h"
 #include "SniperKernel/Incident.h"
