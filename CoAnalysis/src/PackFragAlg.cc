@@ -70,6 +70,12 @@ bool PackFragAlg::execute(){
 }
 
 bool PackFragAlg::finalize(){
+    if ( m_curFragSize > 0 ) {
+        m_frag->lend = m_frag->evtDeque.size();
+        m_gbuf->push_back(m_frag);
+        m_curFragSize = 0;
+    }
+
     m_frag = nullptr;
     m_gbuf->push_back(m_frag);
 
