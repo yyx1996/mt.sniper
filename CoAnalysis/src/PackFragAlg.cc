@@ -61,6 +61,21 @@ bool PackFragAlg::initialize(){
 
 
 bool PackFragAlg::execute(){
+
+    if ( this->logLevel() < 3 ) {
+        static int count = 0;
+        m_nbuf->curEvt()->getHeader("/Event/OEC")->setEventID(count);
+
+        SniperLog::Logger::lock();
+        std::cout << "Put " << count;
+        for ( auto it = m_nbuf->begin(); it != m_nbuf->end(); ++it ) {
+            std::cout << " " << *it;
+        }
+        std::cout << std::endl;
+        SniperLog::Logger::unlock();
+
+        ++count;
+    }
     
     if( addEvent() >= m_maxFragSize){//判断是否应该把Fragment填入GlobalBuffer
         fillFBuf();

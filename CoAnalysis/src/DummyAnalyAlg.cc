@@ -45,6 +45,17 @@ bool DummyAnalyAlg::initialize(){
 bool DummyAnalyAlg::execute(){
     auto cEvt = m_nbuf->curEvt();
     //伪算法运算
+
+    if ( this->logLevel() < 3 ) {
+        SniperLog::Logger::lock();
+        std::cout << "Get " << cEvt->getHeader("/Event/OEC")->EventID();
+        for ( auto it = m_nbuf->begin(); it != m_nbuf->end(); ++it ) {
+            std::cout << " " << *it;
+        }
+        std::cout << std::endl;
+        SniperLog::Logger::unlock();
+    }
+
     return true;
 }
 
