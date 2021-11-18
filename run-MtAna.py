@@ -79,4 +79,3 @@ if __name__ == "__main__":
 
     # spawn the threads and begin to run 
     muster.run()
-    gs.join()
