@@ -39,15 +39,5 @@ bool MtBeginEvtHdl::handle(Incident& /*incident*/)
         return true;
     }
     
-    Task* whichtask = dynamic_cast<Task*>(m_par->getRoot());
-    if (m_stoptask_option == 0) {
-        whichtask = dynamic_cast<Task*>(m_par->getRoot());
-    } else if (m_stoptask_option == 1) {
-        whichtask = m_par;
-    } else {
-        LogError << "Unknown stoptask option " << m_stoptask_option << std::endl;
-        return false;
-    }
-
-    return whichtask->stop();
+    return m_par->stop();
 }

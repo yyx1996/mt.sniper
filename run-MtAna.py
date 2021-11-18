@@ -12,7 +12,7 @@ def HelloJob():
 
     iSvc = task.createSvc("ThrdInputSvc/InputSvc")
     x = task.createAlg("DummyAnalyAlg")
-    x.setLogLevel(2)
+    #x.setLogLevel(2)
 
     global first_time
     if first_time:
@@ -35,7 +35,7 @@ def GInput():
 
     x = task.createAlg("PackFragAlg")
     x.property("MaxFragSize").set(12)
-    x.setLogLevel(2)
+    #x.setLogLevel(2)
 
     return task
 
@@ -75,7 +75,7 @@ if __name__ == "__main__":
 
     # the log level and EvtMax in Sniper.Muster
     Sniper.setLogLevel(3)
-    muster.setEvtMax(-10000)
+    muster.setEvtMax(10000)
 
     # spawn the threads and begin to run 
     muster.run()

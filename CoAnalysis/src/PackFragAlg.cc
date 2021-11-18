@@ -62,6 +62,9 @@ bool PackFragAlg::initialize(){
 
 bool PackFragAlg::execute(){
 
+    // read the full event data beforhand
+    //m_nbuf->curEvt()->getHeader("/Event/OEC")->event("JM::OECEvent");
+
     if ( this->logLevel() < 3 ) {
         static int count = 0;
         m_nbuf->curEvt()->getHeader("/Event/OEC")->setEventID(count);
