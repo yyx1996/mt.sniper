@@ -3,6 +3,7 @@ PKG(CoAnalysis
         offline::EvtNavigator
         offline::RootIOSvc
         SniperMuster
+        OECEvent
 )
 # build
 #file(GLOB sources CONFIGURE_DEPENDS src/*.cc)
