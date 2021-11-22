@@ -5,18 +5,17 @@
 #include "EvtNavigator/EvtNavigator.h"
 #include "RootIOSvc/NavInputStream.h"
 #include "Event/OECHeader.h"
-#include "EventIndex/EventIndex.hh"
 #include <fstream>
 #include <memory>
 
-class PackIndexAlg : public AlgBase
+class DummyPackIndexAlg : public AlgBase
 {
 public:
     typedef Fragment<JM::EvtNavigator> Frag;
     typedef std::shared_ptr<Frag> FragPtr;
 
-    PackIndexAlg(const std::string &name);
-    virtual ~PackIndexAlg();
+    DummyPackIndexAlg(const std::string &name);
+    virtual ~DummyPackIndexAlg();
 
     virtual bool initialize();
     virtual bool execute();
@@ -36,14 +35,14 @@ private:
     std::vector<std::string> m_data;
     std::pair<double, double> m_window;
 
-    AEIPlainReader m_reader;
+    std::ifstream    m_indexStream;
     NavInputStream*  m_dataStream;
     long m_total;
 };
 
-DECLARE_ALGORITHM(PackIndexAlg);
+DECLARE_ALGORITHM(DummyPackIndexAlg);
 
-PackIndexAlg::PackIndexAlg(const std::string &name)
+DummyPackIndexAlg::DummyPackIndexAlg(const std::string &name)
     : AlgBase(name),
       m_lastEntry(-1)
 {
@@ -52,20 +51,15 @@ PackIndexAlg::PackIndexAlg(const std::string &name)
     declProp("TimeWindow", m_window);
 }
 
-PackIndexAlg::~PackIndexAlg() {}
+DummyPackIndexAlg::~DummyPackIndexAlg() {}
 
-bool PackIndexAlg::initialize()
+bool DummyPackIndexAlg::initialize()
 {
     //获取存放fragment 的globalbuffer
     m_gbuf = GlobalStream<Frag>::GetBuffer("GFragStream");
 
     //open the index stream
-    bool st = m_reader.open(m_index);
-    if (!st) {
-        std::cerr << "Failed to open " << m_index << std::endl;
-        return false;
-    }
-
+    m_indexStream.open(m_index);
 
     //open the data stream
     m_dataStream = new NavInputStream(m_data);
@@ -78,7 +72,7 @@ bool PackIndexAlg::initialize()
     return stat;
 }
 
-bool PackIndexAlg::execute()
+bool DummyPackIndexAlg::execute()
 {
     //read index
     long indexEntry = nextIndexEntry();
@@ -116,9 +110,9 @@ bool PackIndexAlg::execute()
     return true;
 }
 
-bool PackIndexAlg::finalize()
+bool DummyPackIndexAlg::finalize()
 {
-    m_reader.close();
+    m_indexStream.close();
     delete m_dataStream;
 
     if (m_gbuf->status()) {
@@ -128,22 +122,19 @@ bool PackIndexAlg::finalize()
     return true;
 }
 
-long PackIndexAlg::nextIndexEntry()
+long DummyPackIndexAlg::nextIndexEntry()
 {
     long entry;
-
-    AEI idx;
-    if(!m_reader.get(idx)){
+    m_indexStream >> entry;
+    if ( ! m_indexStream.good() ) {
         m_par->stop();
     }
-    entry = idx.getEntryId();
-    
     return entry;
 }
 
-PackIndexAlg::FragPtr PackIndexAlg::index2Frag(long entry)
+DummyPackIndexAlg::FragPtr DummyPackIndexAlg::index2Frag(long entry)
 {
-    PackIndexAlg::FragPtr dest(new Frag);
+    DummyPackIndexAlg::FragPtr dest(new Frag);
 
     std::shared_ptr<JM::EvtNavigator> cur;
     if (entry > m_lastEntry)
@@ -217,7 +208,7 @@ PackIndexAlg::FragPtr PackIndexAlg::index2Frag(long entry)
     return dest;
 }
 
-bool PackIndexAlg::inTimeWindow(JM::EvtNavigator *p, const TTimeStamp &t0)
+bool DummyPackIndexAlg::inTimeWindow(JM::EvtNavigator *p, const TTimeStamp &t0)
 {
     auto evt = dynamic_cast<JM::OECEvent *>(p->getHeader("/Event/OEC")->event("JM::OECEvent"));
     auto t = evt->getTime();
