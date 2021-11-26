@@ -195,13 +195,12 @@ PackIndexAlg::FragPtr PackIndexAlg::index2Frag(long entry)
         { //要读的事例在lastEntry之后,说明不曾被放入过frag
             m_dataStream->next();
             auto p = m_dataStream->get();
+            dest->evtDeque.push_back(std::shared_ptr<JM::EvtNavigator>(p));//
             if (!inTimeWindow(p, t0))
-            {
-                delete p;
-                m_lastEntry = ientry - 1; //本次pack结束后更新m_lastEntry
+            {                    // 此处修改原因：stream连续两次访问相同的entry，第一次访问后delete，第二次访问就获取一个被delete的指针  
+                m_lastEntry = ientry; //本次pack结束后更新m_lastEntry(注意：此处超出m_lastEntry的事例也被打包进frag)
                 break;
             }
-            dest->evtDeque.push_back(std::shared_ptr<JM::EvtNavigator>(p));
         }
         else
         { //要读的事例在lastEntry之前，需要从lastFrag取
